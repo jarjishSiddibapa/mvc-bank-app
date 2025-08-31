@@ -1,5 +1,15 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+<!-- Defensive guard for missing account attribute -->
+<c:if test="${account == null}">
+  <div class="container py-4">
+      <div class="alert alert-danger mt-5">
+          Account details could not be loaded. <a href="DashboardController">Back to Dashboard</a>
+      </div>
+  </div>
+</c:if>
+<c:if test="${account != null}">
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -130,11 +140,6 @@
                                     <i class="fas fa-minus-circle me-2"></i>Withdraw Money
                                 </button>
                                 
-                                <!-- Transfer Money -->
-                                <a href="transfer.jsp" class="btn btn-banking-primary">
-                                    <i class="fas fa-exchange-alt me-2"></i>Transfer Money
-                                </a>
-                                
                                 <!-- View Statement -->
                                 <a href="PassbookController?accountId=${account.accountId}" class="btn btn-banking-secondary">
                                     <i class="fas fa-file-invoice me-2"></i>View Statement
@@ -239,3 +244,4 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+</c:if>

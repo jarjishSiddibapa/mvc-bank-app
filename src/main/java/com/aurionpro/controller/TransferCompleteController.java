@@ -31,11 +31,9 @@ public class TransferCompleteController extends HttpServlet {
 		int receiverAccountId = Integer.parseInt(request.getParameter("receiverAccountId"));
 		BigDecimal amount = new BigDecimal(request.getParameter("amount"));
 		String description = request.getParameter("description");
-
 		BankAccount senderAccount = accountService.getAccountById(senderAccountId);
 		BankAccount receiverAccount = accountService.getAccountById(receiverAccountId);
 		String message = "";
-
 		if (receiverAccount == null || !"active".equalsIgnoreCase(receiverAccount.getStatus())) {
 			message = "Recipient account not found or not active.";
 		} else if (!"active".equalsIgnoreCase(senderAccount.getStatus())) {
@@ -56,10 +54,10 @@ public class TransferCompleteController extends HttpServlet {
 					: description.trim());
 			transaction.setTransactionDate(new Timestamp(System.currentTimeMillis()));
 			transaction.setDeleted(false);
-			accountService.saveTransaction(transaction); // SERVICE method
+			accountService.saveTransaction(transaction);
 			message = "Transfer completed successfully.";
 		}
-		request.setAttribute("message", message);
-		request.getRequestDispatcher("DashboardController").forward(request, response);
+		// Use sendRedirect so message reaches the DashboardController as a parameter
+		response.sendRedirect("DashboardController?message=" + java.net.URLEncoder.encode(message, "UTF-8"));
 	}
 }

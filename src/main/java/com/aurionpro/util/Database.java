@@ -1,9 +1,8 @@
 package com.aurionpro.util;
 
-import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.util.Properties;
+import java.sql.SQLException;
 
 public class Database {
 	private static Database instance;
@@ -11,15 +10,11 @@ public class Database {
 
 	private Database() {
 		try {
-			Properties props = new Properties();
-			InputStream in = getClass().getClassLoader().getResourceAsStream("application.properties");
-			props.load(in);
-			String url = props.getProperty("db.url");
-			String user = props.getProperty("db.user");
-			String password = props.getProperty("db.password");
+			// Correct driver for PostgreSQL
 			Class.forName("org.postgresql.Driver");
-			connection = DriverManager.getConnection(url, user, password);
-		} catch (Exception e) {
+			connection = DriverManager.getConnection("jdbc:postgresql://localhost:5433/bankdb", "postgres", "1234");
+			System.out.println("Connection successful!");
+		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
 	}
