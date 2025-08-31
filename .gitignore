@@ -1,0 +1,22 @@
+# IDE config
+/.classpath
+/.project
+/.settings/
+/.idea/
+/*.iml
+/.vscode/
+
+# Build output
+/target/
+/build/
+/out/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# OS/temporary files
+*.log
+
+# Application secrets (customize path as needed)
+src/main/resources/application.properties
