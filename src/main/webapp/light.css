@@ -1,0 +1,6 @@
+body.theme-light {
+    background: linear-gradient(135deg, #f1faee 0%, rgba(168, 218, 220, 0.2) 100%);
+    color: #111;
+}
+.navbar-banking { background: linear-gradient(135deg, #1d3557 0%, #457b9d 100%); }
+footer.bg-dark { background: #1d3557 !important; }

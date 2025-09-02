@@ -1,0 +1,16 @@
+body.theme-dark {
+    background: #181a1b;
+    color: #f1faee;
+}
+.navbar-banking { background: linear-gradient(135deg, #22263b 0%, #2c394d 100%); }
+footer.bg-dark { background: #181a1b !important; }
+.card-banking, .bg-white {
+    background: #23272f !important;
+    color: #f1faee !important;
+}
+.text-dark { color: #f1faee !important; }
+.text-light, .text-muted { color: #bfc9d1 !important; }
+.btn-banking-primary,
+.btn-banking-secondary {
+    filter: brightness(0.85);
+}

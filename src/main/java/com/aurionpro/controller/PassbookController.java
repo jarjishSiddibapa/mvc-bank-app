@@ -17,6 +17,7 @@ import com.aurionpro.service.BankAccountService;
 
 @WebServlet("/PassbookController")
 public class PassbookController extends HttpServlet {
+	private static final long serialVersionUID = 1L;
 	private BankAccountService accountService;
 
 	@Override

@@ -2,6 +2,7 @@ package com.aurionpro.controller;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.aurionpro.model.BankAccount;
+import com.aurionpro.model.Transaction;
 import com.aurionpro.service.BankAccountService;
 
 @WebServlet("/DepositWithdrawController")
@@ -31,13 +33,12 @@ public class DepositWithdrawController extends HttpServlet {
 			response.sendRedirect("login.jsp");
 			return;
 		}
-
 		int accountId = Integer.parseInt(request.getParameter("accountId"));
 		String action = request.getParameter("action");
 		BigDecimal amount = new BigDecimal(request.getParameter("amount"));
-
 		BankAccount account = accountService.getAccountById(accountId);
 		String message = "";
+		boolean transactionSuccess = false;
 
 		// 1. Only allow on "active" accounts
 		if (!"active".equalsIgnoreCase(account.getStatus())) {
@@ -53,13 +54,34 @@ public class DepositWithdrawController extends HttpServlet {
 				message = "Insufficient balance.";
 			} else {
 				accountService.updateBalance(accountId, account.getBalance().subtract(amount));
+				// Add withdrawal transaction
+				Transaction txn = new Transaction();
+				txn.setSenderAccountId(accountId); // Money is going out
+				txn.setReceiverAccountId(null); // No other party
+				txn.setAmount(amount);
+				txn.setType("withdraw");
+				txn.setDescription("User withdrawal");
+				txn.setTransactionDate(new Timestamp(System.currentTimeMillis()));
+				txn.setDeleted(false);
+				accountService.saveTransaction(txn);
 				message = "Withdrawal successful.";
+				transactionSuccess = true;
 			}
 		}
 		// 4. Deposit
 		else if ("deposit".equals(action)) {
 			accountService.updateBalance(accountId, account.getBalance().add(amount));
+			Transaction txn = new Transaction();
+			txn.setSenderAccountId(null); // No sender for deposit
+			txn.setReceiverAccountId(accountId); // Money is received into this account
+			txn.setAmount(amount);
+			txn.setType("deposit");
+			txn.setDescription("User deposit");
+			txn.setTransactionDate(new Timestamp(System.currentTimeMillis()));
+			txn.setDeleted(false);
+			accountService.saveTransaction(txn);
 			message = "Deposit successful.";
+			transactionSuccess = true;
 		} else {
 			message = "Invalid action.";
 		}

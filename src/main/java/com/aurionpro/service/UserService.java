@@ -66,4 +66,14 @@ public class UserService {
 		}
 		return null;
 	}
+
+	// NEW METHOD: Update user profile (only basic info)
+	public boolean updateUserProfile(int userId, String fullName, String email, String phone) {
+		try {
+			return dao.updateUserProfile(userId, fullName, email, phone);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
 }

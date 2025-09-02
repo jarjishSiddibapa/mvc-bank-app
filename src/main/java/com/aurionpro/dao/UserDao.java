@@ -127,4 +127,16 @@ public class UserDao {
 		}
 		return null;
 	}
+
+	// NEW METHOD: Update only basic user information
+	public boolean updateUserProfile(int userId, String fullName, String email, String phone) throws SQLException {
+		String sql = "UPDATE users SET full_name = ?, email = ?, phone = ? WHERE user_id = ? AND is_deleted = FALSE";
+		try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+			stmt.setString(1, fullName);
+			stmt.setString(2, email);
+			stmt.setString(3, phone);
+			stmt.setInt(4, userId);
+			return stmt.executeUpdate() > 0;
+		}
+	}
 }

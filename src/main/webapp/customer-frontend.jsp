@@ -6,6 +6,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard - Auro Bank</title>
+<link id="theme-style" rel="stylesheet" href="light.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -22,6 +23,11 @@
       <div class="card-body text-center py-4">
         <h1 class="display-6 fw-bold mb-2">Welcome back, ${user.fullName}!</h1>
         <p class="lead mb-0">Manage your accounts and transactions</p>
+        <div class="mt-3">
+          <a href="EditProfileController" class="btn btn-outline-light btn-sm">
+            <i class="fas fa-user-edit me-1"></i>Edit My Profile
+          </a>
+        </div>
       </div>
     </div>
   </div>

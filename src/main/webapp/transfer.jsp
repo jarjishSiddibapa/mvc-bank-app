@@ -12,6 +12,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Transfer Money - Auro Bank</title>
+    <link id="theme-style" rel="stylesheet" href="light.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -47,7 +48,7 @@
                                         <option value="">Select your account...</option>
                                         <c:forEach var="account" items="${accounts}">
                                             <c:if test="${account.status == 'active'}">
-                                                <option value="${account.accountId}" data-balance="${account.balance}">
+                                                <option value="${account.accountId}" data-balance="${account.balance != null ? account.balance : 0}">
                                                     ${account.accountNumber} (${account.accountType}) - ₹${account.balance}
                                                 </option>
                                             </c:if>
@@ -71,7 +72,7 @@
                                     </label>
                                     <input type="number" step="0.01" name="amount" class="form-control" 
                                            placeholder="0.00" required min="0.01" id="amount">
-                                    <div class="form-text" id="balanceInfo"></div>
+                                    <div class="form-text" id="balanceInfo">Select an account to see available balance</div>
                                 </div>
 
                                 <div class="col-md-6 mb-4 d-flex align-items-end">
@@ -116,17 +117,31 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        document.getElementById('fromAccount').addEventListener('change', function() {
-            const balance = this.options[this.selectedIndex].dataset.balance;
+        function updateBalanceInfo() {
+            const select = document.getElementById('fromAccount');
             const balanceInfo = document.getElementById('balanceInfo');
-            if (balance) {
-                balanceInfo.innerHTML = `Available balance: ₹${balance}`;
-                balanceInfo.className = 'form-text text-success';
-                document.getElementById('amount').max = balance;
-            } else {
-                balanceInfo.innerHTML = '';
-                document.getElementById('amount').removeAttribute('max');
+            const amountInput = document.getElementById('amount');
+            
+            if (select.selectedIndex === 0) {
+                // No account selected
+                balanceInfo.innerHTML = 'Select an account to see available balance';
+                balanceInfo.className = 'form-text text-muted';
+                amountInput.removeAttribute('max');
+                return;
             }
+            
+            let balance = select.options[select.selectedIndex].dataset.balance;
+            if (!balance || balance === '') balance = '0';
+            
+            balanceInfo.innerHTML = `Available balance: ₹${balance}`;
+            balanceInfo.className = 'form-text text-success';
+            amountInput.max = balance;
+        }
+        
+        // Attach event listener and run on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('fromAccount').addEventListener('change', updateBalanceInfo);
+            updateBalanceInfo(); // Run initially
         });
     </script>
 </body>

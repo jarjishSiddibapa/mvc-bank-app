@@ -1,7 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
-<!-- Defensive guard for missing account attribute -->
 <c:if test="${account == null}">
   <div class="container py-4">
       <div class="alert alert-danger mt-5">
@@ -16,6 +14,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Account Details - Auro Bank</title>
+    <link id="theme-style" rel="stylesheet" href="light.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -31,7 +30,6 @@
                 </a>
             </div>
         </div>
-
         <!-- Account Header -->
         <div class="card card-banking mb-4 shadow-lg">
             <div class="card-body" style="background: linear-gradient(135deg, var(--secondary-color), var(--dark-color)); color: white;">
@@ -54,7 +52,6 @@
                 </div>
             </div>
         </div>
-
         <!-- Alert Messages -->
         <c:if test="${not empty message}">
             <div class="alert alert-banking-success alert-dismissible fade show">
@@ -62,11 +59,9 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         </c:if>
-
         <!-- Account Information & Actions -->
         <div class="row">
             <div class="col-md-8">
-                <!-- Account Information -->
                 <div class="card card-banking mb-4">
                     <div class="card-header">
                         <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Account Information</h5>
@@ -120,9 +115,7 @@
                     </div>
                 </div>
             </div>
-
             <div class="col-md-4">
-                <!-- Quick Actions -->
                 <div class="card card-banking">
                     <div class="card-header">
                         <h5 class="mb-0"><i class="fas fa-bolt me-2"></i>Quick Actions</h5>
@@ -130,22 +123,16 @@
                     <div class="card-body">
                         <div class="d-grid gap-2">
                             <c:if test="${account.status == 'active'}">
-                                <!-- Deposit Money -->
                                 <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#depositModal">
                                     <i class="fas fa-plus-circle me-2"></i>Deposit Money
                                 </button>
-                                
-                                <!-- Withdraw Money -->
                                 <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#withdrawModal">
                                     <i class="fas fa-minus-circle me-2"></i>Withdraw Money
                                 </button>
-                                
-                                <!-- View Statement -->
                                 <a href="PassbookController?accountId=${account.accountId}" class="btn btn-banking-secondary">
                                     <i class="fas fa-file-invoice me-2"></i>View Statement
                                 </a>
                             </c:if>
-                            
                             <c:if test="${account.status != 'active'}">
                                 <div class="alert alert-info">
                                     <i class="fas fa-info-circle me-2"></i>
@@ -158,7 +145,6 @@
             </div>
         </div>
     </div>
-
     <!-- Deposit Modal -->
     <div class="modal fade" id="depositModal" tabindex="-1">
         <div class="modal-dialog">
@@ -173,16 +159,13 @@
                     <div class="modal-body">
                         <input type="hidden" name="accountId" value="${account.accountId}">
                         <input type="hidden" name="action" value="deposit">
-                        
                         <div class="mb-3">
                             <label class="form-label fw-semibold">Deposit Amount</label>
                             <div class="input-group">
                                 <span class="input-group-text">₹</span>
-                                <input type="number" step="0.01" name="amount" class="form-control" 
-                                       placeholder="0.00" required min="0.01">
+                                <input type="number" step="0.01" name="amount" class="form-control" placeholder="0.00" required min="0.01">
                             </div>
                         </div>
-                        
                         <div class="alert alert-info">
                             <i class="fas fa-info-circle me-2"></i>
                             Amount will be credited to your account immediately.
@@ -198,7 +181,6 @@
             </div>
         </div>
     </div>
-
     <!-- Withdraw Modal -->
     <div class="modal fade" id="withdrawModal" tabindex="-1">
         <div class="modal-dialog">
@@ -213,17 +195,14 @@
                     <div class="modal-body">
                         <input type="hidden" name="accountId" value="${account.accountId}">
                         <input type="hidden" name="action" value="withdraw">
-                        
                         <div class="mb-3">
                             <label class="form-label fw-semibold">Withdraw Amount</label>
                             <div class="input-group">
                                 <span class="input-group-text">₹</span>
-                                <input type="number" step="0.01" name="amount" class="form-control" 
-                                       placeholder="0.00" required min="0.01" max="${account.balance}">
+                                <input type="number" step="0.01" name="amount" class="form-control" placeholder="0.00" required min="0.01" max="${account.balance}">
                             </div>
                             <div class="form-text">Available balance: ₹${account.balance}</div>
                         </div>
-                        
                         <div class="alert alert-warning">
                             <i class="fas fa-exclamation-triangle me-2"></i>
                             Ensure you have sufficient balance before withdrawal.
@@ -239,7 +218,6 @@
             </div>
         </div>
     </div>
-
     <jsp:include page="common/footer.jsp" />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register - Auro Bank</title>
+    <link id="theme-style" rel="stylesheet" href="light.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -31,9 +32,14 @@
                         <p class="mb-0">Create your user account in minutes</p>
                     </div>
                     <div class="card-body p-4">
+                        <!-- Success/Error Message Banner -->
                         <c:if test="${not empty message}">
-                            <div class="alert alert-banking-danger">
-                                <i class="fas fa-exclamation-triangle me-2"></i>${message}
+                            <div class="alert
+                                ${message eq 'Account created! Please login.' ? 'alert-banking-success' : 'alert-banking-danger'}">
+                                <i class="fas
+                                    ${message eq 'Account created! Please login.' ? 'fa-check-circle' : 'fa-exclamation-triangle'}
+                                me-2"></i>
+                                ${message}
                             </div>
                         </c:if>
 

@@ -21,12 +21,7 @@ import com.aurionpro.service.BankAccountService;
 @WebServlet("/DashboardController")
 public class DashboardController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private BankAccountService accountService;
-
-	public DashboardController() {
-		super();
-		accountService = new BankAccountService();
-	}
+	private BankAccountService accountService = new BankAccountService();
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -38,18 +33,17 @@ public class DashboardController extends HttpServlet {
 		}
 
 		User user = (User) session.getAttribute("user");
-
-		// Load user's accounts
+		// Load up-to-date accounts from DB for this user
 		List<BankAccount> accounts = accountService.getAccountsForUser(user.getUserId());
 		request.setAttribute("accounts", accounts);
 
-		// Handle message parameter and set as attribute
+		// Handle message parameter (useful for redirect-after-mutation)
 		String message = request.getParameter("message");
-		if (message != null) {
+		if (message != null && !message.trim().isEmpty()) {
 			request.setAttribute("message", message);
 		}
 
-		// Forward to JSP
+		// Forward to dashboard JSP
 		RequestDispatcher rd = request.getRequestDispatcher("customer-frontend.jsp");
 		rd.forward(request, response);
 	}
@@ -57,6 +51,6 @@ public class DashboardController extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		doGet(request, response);
+		doGet(request, response); // Simply redirect POST to GET for safety
 	}
 }
